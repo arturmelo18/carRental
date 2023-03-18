@@ -1,19 +1,21 @@
-package entities;
+package model.entities;
 
 public class Client {
 
 	private String name;
 	private String email;
-	private long document;
+	
+	
+	private Car car;
 
 	public Client() {
 	}
 
-	public Client(String name, String email, long document) {
+	public Client(String name, String email, Car car) {
 		super();
 		this.name = name;
 		this.email = email;
-		this.document = document;
+		this.car = car;
 	}
 
 	public String getName() {
@@ -31,17 +33,21 @@ public class Client {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	public long getDocument() {
-		return document;
+	
+	public Car getCar() {
+		return car;
+	}
+	
+	public void setCar(Car car) {
+		this.car = car;
 	}
 	
 	public String toString() {
 		return "Client name: "
-			   + name
+			   + getName()
 			   + ". Client email: "
-			   + email
-			   + "Client document: "
-			   + document;
+			   + getEmail()
+			   + ". Rented car: "
+			   + getCar();
 	}
 }

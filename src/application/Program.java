@@ -1,9 +1,12 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-import entities.Car;
-import entities.Client;
+import model.entities.Car;
+import model.entities.Client;
+import model.services.BrazilRentService;
 
 public class Program {
 
@@ -11,108 +14,72 @@ public class Program {
 
 		Scanner sc = new Scanner(System.in);
 
+		List<Client> client = new ArrayList<>();
+		List<Car> car = new ArrayList<>();
+
+		car.add(new Car("Uno", 20.0));
+		car.add(new Car("T-Cross", 50.0));
+		car.add(new Car("Livina", 30.0));
+
 		int n = 0;
 
-		Car[] cars = new Car[3];
-		Client[] client = new Client[cars.length];
-
-		for (int i = 0; i < 3; i++) {
-			System.out.println("Car name:");
-			String carName = sc.nextLine();
-			System.out.println("Car board:");
-			long carBoard = sc.nextLong();
-			sc.nextLine();
-			if (carBoard > 9999999 || carBoard < 9999999) {
-				System.out.println("There's no such sign! Enter another");
-				carBoard = sc.nextLong();
-				sc.nextLine();
-				cars[i] = new Car(carName, carBoard);
-			} else {
-				cars[i] = new Car(carName, carBoard);
-			}
-
-		}
-
 		do {
+			System.out.println("Speak your name: ");
+			String name = sc.nextLine();
+			System.out.println("Speak your email: ");
+			String email = sc.nextLine();
+
 			System.out.println("--------------------------------------");
 			System.out.println("---------1) Rent a car----------------");
 			System.out.println("---------2) See cars already rented---");
 			System.out.println("--------------------------------------");
 
-			int a = sc.nextInt();
+			System.out.println("Choose an option");
+			int x = sc.nextInt();
 
-			switch (a) {
+			switch (x) {
 			case 1:
-				for (int i = 0; i < 3; i++) {
-					System.out.println((i + 1) + ") " + cars[i]);
+				int sum = 0;
+				for (Car c : car) {
+					sum++;
+					System.out.println(sum + ") " + c);
 				}
-				System.out.println("Which car do you want?");
-				int x = sc.nextInt();
-				switch (x) {
-				case 1:
-					System.out.println("Speak your name");
+				System.out.println("Choose an car");
+				int option = sc.nextInt();
+				if (option == 1) {
+					client.add(new Client(name, email, car.get(0)));
+					System.out.println("How many hours will you rent the car for: ");
+					int hours = sc.nextInt();
 					sc.nextLine();
-					String name = sc.nextLine();
-					System.out.println("Speak your email");
-					String email = sc.nextLine();
-					System.out.println("Speak your document");
-					long document = sc.nextLong();
-					if (document > 99999999 || document < 99999999) {
-						System.out.println("That document doesn't exist! Say another");
-						document = sc.nextLong();
-						client[0] = new Client(name, email, document);
-					} else {
-						client[0] = new Client(name, email, document);
-					}
-					System.out.println("You managed to rent the car: " + cars[0] + ". Congratulations!");
-					break;
-				case 2:
-					System.out.println("Speak your name");
+					BrazilRentService brs = new BrazilRentService(2.0, client.get(0));
+					System.out.println("The total price will be: $" + String.format("5.2f", brs.totalPrice(hours)));
+					client.get(0).getCar().setStatus("Rented");
+				} else if (option == 2) {
+					client.add(new Client(name, email, car.get(1)));
+					System.out.println("How many hours will you rent the car for: ");
+					int hours = sc.nextInt();
 					sc.nextLine();
-					String name1 = sc.nextLine();
-					System.out.println("Speak your email");
-					String email1 = sc.nextLine();
-					System.out.println("Speak your document");
-					long document1 = sc.nextLong();
-					if (document1 > 99999999 || document1 < 99999999) {
-						System.out.println("That document doesn't exist! Say another");
-						document1 = sc.nextLong();
-						client[1] = new Client(name1, email1, document1);
-					} else {
-						client[1] = new Client(name1, email1, document1);
-					}
-					System.out.println("You managed to rent the car: " + cars[1] + ". Congratulations!");
-					break;
-				case 3:
-					System.out.println("Speak your name");
+					BrazilRentService brs = new BrazilRentService(2.0, client.get(0));
+					System.out.println("The total price will be: $" + String.format("%.2f", brs.totalPrice(hours)));
+					client.get(0).getCar().setStatus("Rented");
+				} else if (option == 3) {
+					client.add(new Client(name, email, car.get(2)));
+					System.out.println("How many hours will you rent the car for: ");
+					int hours = sc.nextInt();
 					sc.nextLine();
-					String name2 = sc.nextLine();
-					System.out.println("Speak your email");
-					String email2 = sc.nextLine();
-					System.out.println("Speak your document");
-					long document2 = sc.nextLong();
-					if (document2 > 99999999 || document2 < 99999999) {
-						System.out.println("That document doesn't exist! Say another");
-						document2 = sc.nextLong();
-						client[2] = new Client(name2, email2, document2);
-					} else {
-						client[2] = new Client(name2, email2, document2);
-					}
-					System.out.println("You managed to rent the car: " + cars[0] + ". Congratulations!");
-					break;
+					BrazilRentService brs = new BrazilRentService(2.0, client.get(0));
+					System.out.println("The total price will be: $" + String.format("5.2f", brs.totalPrice(hours)));
+					client.get(0).getCar().setStatus("Rented");
 				}
-				break;
+				System.out.println("Congratulations! You have successfully rented a car");
 			case 2:
-				for (int i = 0; i < 3; i++) {
-					if (client[i] != null) {
-						System.out.println(cars[i]);
-						System.out.println("Rented by: ");
-						System.out.println(client[i]);
+				for (Car c : car) {
+					if (c.getStatus() != null) {
+						System.out.println(c);
 					}
 				}
-				break;
+				sc.nextLine();
 			}
-
 		} while (n == 0);
 
 		sc.close();
